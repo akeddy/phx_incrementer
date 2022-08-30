@@ -5,8 +5,9 @@ defmodule IncrementWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/api", IncrementWeb do
+  scope "/increment", IncrementWeb do
     pipe_through :api
+    post "/", CounterController, :create
   end
 
   # Enables LiveDashboard only for development
