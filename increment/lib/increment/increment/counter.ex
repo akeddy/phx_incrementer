@@ -9,10 +9,18 @@ defmodule Increment.Increment.Counter do
     timestamps()
   end
 
+  @required ~w(key value)a
+  @optional ~w()a
+
   @doc false
   def changeset(counter, attrs) do
     counter
-    |> cast(attrs, [:key, :value])
-    |> validate_required([:key, :value])
+    # |> cast(attrs, [:key, :value])
+    |> cast(attrs, @required ++ @optional)
+    |> validate_required(@required)
+    |> unique_constraint(
+      :key, # can be any value contained in the constraint
+      name: :index_for_input_keys
+    )
   end
 end
