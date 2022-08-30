@@ -7,42 +7,25 @@ defmodule IncrementWeb.CounterController do
 
   action_fallback IncrementWeb.FallbackController
 
-  # def index(conn, _params) do
-  #   counters = Tasks.list_counters()
-  #   render(conn, "index.json", counters: counters)
-  # end
-
-  # def create(conn, %{"counter" => counter_params}) do
-  def create(conn, %{"key" => key, "value" => value} = counter_params) do
+  def create(conn, %{"key" => key, "value" => value} = counter_params) when is_bitstring(key) and is_number(value) do
     Logger.debug("Key: #{key}")
     Logger.debug("Value: #{value}")
-    with {:ok, %Counter{} = _counter} <- Tasks.create_counter(counter_params) do
+    with {:ok, %Counter{}} <- Tasks.create_counter(counter_params) do
       conn
-      |> put_status(:created)
-      # |> put_resp_header("location", Routes.counter_path(conn, :show, counter))
-      # |> render("show.json", counter: counter)
-      |> send_resp(200, "")
+      |> put_status(:accepted)
+      |> send_resp(202, "")
+    else
+      {:error, error} ->
+        Logger.error("Failed to increment counter. Error: #{inspect error}")
+        conn
+        |> put_status(:bad_request)
+        |> send_resp(404, "")
     end
   end
-
-  # def show(conn, %{"id" => id}) do
-  #   counter = Tasks.get_counter!(id)
-  #   render(conn, "show.json", counter: counter)
-  # end
-
-  # def update(conn, %{"id" => id, "counter" => counter_params}) do
-  #   counter = Tasks.get_counter!(id)
-
-  #   with {:ok, %Counter{} = counter} <- Tasks.update_counter(counter, counter_params) do
-  #     render(conn, "show.json", counter: counter)
-  #   end
-  # end
-
-  # def delete(conn, %{"id" => id}) do
-  #   counter = Tasks.get_counter!(id)
-
-  #   with {:ok, %Counter{}} <- Tasks.delete_counter(counter) do
-  #     send_resp(conn, :no_content, "")
-  #   end
-  # end
+  # reject a request if it does not have the correct format
+  def create(conn, %{}) do
+    conn
+    |> put_status(:bad_request)
+    |> send_resp(404, "")
+  end
 end
