@@ -1,0 +1,49 @@
+version: "3.5"
+services:
+  db:
+    image: postgres:9.6
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      PG_DATE: /var/lib/postgresql/data/pgdata
+    restart: always
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "127.0.0.1:5432:5432"
+
+  increment:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        MIX_ENV: prod
+        DATABASE_URL: ecto://postgres:postgres@db/increment_prod
+        POOL_SIZE: 10
+        SECRET_KEY_BASE: asdasdaskdjaskdjasdsd
+        PORT: 4000
+    environment:
+      MIX_ENV: prod
+      DATABASE_URL: ecto://postgres:postgres@db/increment_prod
+      POOL_SIZE: 10
+      PORT: 4000
+      SECRET_KEY_BASE: asdasdaskdjaskdjasdsd
+    # command: mix ecto.create
+    # command: mix ecto.migrate
+    command: mix phx.server
+    ports: 
+      - "4000"
+    depends_on:
+      - db
+
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - increment
+    ports:
+      - "3333:3333"
+
+volumes:
+  pgdata:
