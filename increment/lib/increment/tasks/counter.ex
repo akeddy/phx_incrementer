@@ -1,4 +1,4 @@
-defmodule Increment.Increment.Counter do
+defmodule Increment.Tasks.Counter do
   use Ecto.Schema
   import Ecto.Changeset
 
