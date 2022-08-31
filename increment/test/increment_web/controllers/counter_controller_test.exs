@@ -10,8 +10,8 @@ defmodule IncrementWeb.CounterControllerTest do
     value: 42
   }
   @invalid_attrs %{key: nil, value: nil}
-
   @missing_attrs %{}
+  @sleep_time Application.get_env(:increment, :persist_cache, 30 * 1000)
 
   setup %{conn: conn} do
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
@@ -27,9 +27,8 @@ defmodule IncrementWeb.CounterControllerTest do
     test "renders counter when data is valid", %{conn: conn} do
       conn = post(conn, Routes.counter_path(conn, :create), @create_attrs)
       assert "" = response(conn, 202)
+      :timer.sleep(@sleep_time) # for cache commits
       counter = Increment.Repo.get_by(Counter, key: @create_attrs.key)
-
-      # :timer.sleep(1000 * 31) # for cache commits
 
       assert %Increment.Tasks.Counter{
         key: "some key",
@@ -46,9 +45,9 @@ defmodule IncrementWeb.CounterControllerTest do
           post(conn, Routes.counter_path(acc, :create), @create_attrs)
         end)
       assert "" = response(conn, 202)
-      counter = Increment.Repo.get_by(Counter, key: @create_attrs.key)
 
-      # :timer.sleep(1000 * 31) # for cache commits
+      :timer.sleep(@sleep_time) # for cache commits
+      counter = Increment.Repo.get_by(Counter, key: @create_attrs.key)
 
       assert %Increment.Tasks.Counter{
         key: "some key",
@@ -65,9 +64,9 @@ defmodule IncrementWeb.CounterControllerTest do
           post(conn, Routes.counter_path(acc, :create), @create_attrs)
         end)
       assert "" = response(conn, 202)
-      counter = Increment.Repo.get_by(Counter, key: @create_attrs.key)
 
-      # :timer.sleep(1000 * 31) # for cache commits
+      :timer.sleep(@sleep_time) # for cache commits
+      counter = Increment.Repo.get_by(Counter, key: @create_attrs.key)
 
       assert %Increment.Tasks.Counter{
         key: "some key",
@@ -84,9 +83,9 @@ defmodule IncrementWeb.CounterControllerTest do
           post(conn, Routes.counter_path(acc, :create), @create_attrs)
         end)
       assert "" = response(conn, 202)
-      counter = Increment.Repo.get_by(Counter, key: @create_attrs.key)
 
-      # :timer.sleep(1000 * 31) # for cache commits
+      :timer.sleep(@sleep_time) # for cache commits
+      counter = Increment.Repo.get_by(Counter, key: @create_attrs.key)
 
       assert %Increment.Tasks.Counter{
         key: "some key",
@@ -105,9 +104,9 @@ defmodule IncrementWeb.CounterControllerTest do
           post(conn, Routes.counter_path(acc, :create), @create_attrs)
         end)
       assert "" = response(conn, 202)
-      counter = Increment.Repo.get_by(Counter, key: @create_attrs.key)
 
-      # :timer.sleep(1000 * 31) # for cache commits
+      :timer.sleep(@sleep_time) # for cache commits
+      counter = Increment.Repo.get_by(Counter, key: @create_attrs.key)
 
       assert %Increment.Tasks.Counter{
         key: "some key",
@@ -126,9 +125,9 @@ defmodule IncrementWeb.CounterControllerTest do
           post(conn, Routes.counter_path(acc, :create), @create_attrs)
         end)
       assert "" = response(conn, 202)
-      counter = Increment.Repo.get_by(Counter, key: @create_attrs.key)
 
-      # :timer.sleep(1000 * 31 * 5) # for cache commits
+      :timer.sleep(@sleep_time) # for cache commits
+      counter = Increment.Repo.get_by(Counter, key: @create_attrs.key)
 
       assert %Increment.Tasks.Counter{
         key: "some key",
