@@ -1,0 +1,13 @@
+{
+  "skip_files": [
+    "test/support",
+    "lib/increment.ex",
+    "lib/increment/application.ex",
+    "lib/increment/repo.ex",
+    "lib/increment_web.ex",
+    "lib/increment_web/endpoint.ex",
+    "lib/increment_web/gettext.ex",
+    "lib/increment_web/router.ex",
+    "lib/increment_web/views/"
+  ]
+}
