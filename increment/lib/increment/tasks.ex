@@ -105,4 +105,24 @@ defmodule Increment.Tasks do
   def change_counter(%Counter{} = counter, attrs \\ %{}) do
     Counter.changeset(counter, attrs)
   end
+
+  @doc """
+  Caches a counter.
+
+  ## Examples
+
+      iex> cache_counter(%{field: value})
+      {:ok, _int}
+
+      iex> cache_counter(%{field: bad_value})
+      {:error, _integer}
+
+  """
+  def cache_counter(attrs \\ %{})
+  def cache_counter(%{"key" => key, "value" => value}) do
+    Cachex.incr(:persistence_cache, key, value, initial: 0)
+  end
+  def cache_counter(%{}) do
+    {:error, 0}
+  end
 end

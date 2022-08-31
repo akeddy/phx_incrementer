@@ -14,6 +14,10 @@ defmodule Increment.Application do
       IncrementWeb.Telemetry,
       # Start the PubSub system
       {Phoenix.PubSub, name: Increment.PubSub},
+      # start my persistence cache
+      {Cachex, name: :persistence_cache},
+      # Add our Cache updating job
+      Increment.CommitIncrement,
       # Start the Endpoint (http/https)
       IncrementWeb.Endpoint
       # Start a worker by calling: Increment.Worker.start_link(arg)
