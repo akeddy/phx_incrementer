@@ -27,7 +27,7 @@ defmodule Increment.MixProject do
   def application do
     [
       mod: {Increment.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :os_mon]
     ]
   end
 
