@@ -8,6 +8,7 @@ defmodule Increment.Repo.Migrations.CreateCounters do
 
       timestamps()
     end
+
     create(
       unique_index(
         :counters,

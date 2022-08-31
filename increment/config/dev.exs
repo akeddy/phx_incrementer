@@ -61,4 +61,5 @@ config :phoenix, :stacktrace_depth, 20
 config :phoenix, :plug_init_mode, :runtime
 
 config :increment,
-  persist_cache: 30 * 1000 # persist every 30 seconds
+  # persist every 30 seconds
+  persist_cache: 30 * 1000

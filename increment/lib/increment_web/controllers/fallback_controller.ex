@@ -11,6 +11,7 @@ defmodule IncrementWeb.FallbackController do
   # This clause handles errors returned by Ecto's insert/update/delete.
   def call(conn, {:error, %Ecto.Changeset{} = changeset}) do
     Logger.error("Error in changeset: #{inspect(changeset)}")
+
     conn
     |> put_status(:unprocessable_entity)
     # |> put_view(IncrementWeb.ChangesetView)

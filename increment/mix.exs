@@ -12,12 +12,12 @@ defmodule Increment.MixProject do
       aliases: aliases(),
       deps: deps(),
       test_coverage: [tool: ExCoveralls],
-			preferred_cli_env: [
-				coveralls: :test,
-				"coveralls.detail": :test,
-				"coveralls.post": :test,
-				"coveralls.html": :test
-			]
+      preferred_cli_env: [
+        coveralls: :test,
+        "coveralls.detail": :test,
+        "coveralls.post": :test,
+        "coveralls.html": :test
+      ]
     ]
   end
 
@@ -52,7 +52,7 @@ defmodule Increment.MixProject do
       {:plug_cowboy, "~> 2.5"},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:cachex, "~> 3.4"},
-			{:excoveralls, "~> 0.10", only: :test}
+      {:excoveralls, "~> 0.10", only: :test}
     ]
   end
 

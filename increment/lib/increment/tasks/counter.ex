@@ -19,7 +19,8 @@ defmodule Increment.Tasks.Counter do
     |> cast(attrs, @required ++ @optional)
     |> validate_required(@required)
     |> unique_constraint(
-      :key, # can be any value contained in the constraint
+      # can be any value contained in the constraint
+      :key,
       name: :index_for_input_keys
     )
   end

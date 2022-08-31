@@ -53,7 +53,7 @@ defmodule Increment.Tasks do
     %Counter{}
     |> Counter.changeset(attrs)
     |> Repo.insert(
-      on_conflict: [inc: [value: Map.get(attrs, "value", 0)] ],
+      on_conflict: [inc: [value: Map.get(attrs, "value", 0)]],
       conflict_target: :key,
       returning: true
     )
@@ -119,9 +119,11 @@ defmodule Increment.Tasks do
 
   """
   def cache_counter(attrs \\ %{})
+
   def cache_counter(%{"key" => key, "value" => value}) do
     Cachex.incr(:persistence_cache, key, value, initial: 0)
   end
+
   def cache_counter(%{}) do
     {:error, 0}
   end

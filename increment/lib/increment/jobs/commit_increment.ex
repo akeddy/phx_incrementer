@@ -8,16 +8,20 @@ defmodule Increment.CommitIncrement do
   end
 
   def init(state) do
-    schedule_work() # Schedule work to be performed at some point
+    # Schedule work to be performed at some point
+    schedule_work()
     {:ok, state}
   end
 
   def handle_info(:work, state) do
     # Do the work you desire here
     query = Cachex.Query.create(true, {:key, :value})
-    temp_cache = :persistence_cache
-            |> Cachex.stream!(query)
-            |> Enum.map(fn {k,v} -> %{"key" => k, "value" => v} end)
+
+    temp_cache =
+      :persistence_cache
+      |> Cachex.stream!(query)
+      |> Enum.map(fn {k, v} -> %{"key" => k, "value" => v} end)
+
     Cachex.reset(:persistence_cache)
 
     # cant decide if this is a great idea or not yet
@@ -28,7 +32,8 @@ defmodule Increment.CommitIncrement do
       end)
     end)
 
-    schedule_work() # Reschedule once more
+    # Reschedule once more
+    schedule_work()
     {:noreply, state}
   end
 
