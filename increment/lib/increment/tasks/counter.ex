@@ -1,4 +1,8 @@
 defmodule Increment.Tasks.Counter do
+  @moduledoc """
+  provides the database schema and changeset for a counter
+  """
+
   use Ecto.Schema
   import Ecto.Changeset
 

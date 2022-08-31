@@ -1,5 +1,5 @@
 defmodule IncrementWeb.Telemetry do
-  @modueldoc """
+  @moduledoc """
   genserver for telemetry
   """
 

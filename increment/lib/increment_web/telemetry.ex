@@ -1,4 +1,8 @@
 defmodule IncrementWeb.Telemetry do
+  @moduledoc """
+  provides telemetry for the app
+  """
+  
   use Supervisor
   import Telemetry.Metrics
 

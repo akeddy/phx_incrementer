@@ -11,10 +11,10 @@ defmodule IncrementWeb.CounterControllerTest do
   }
   @invalid_attrs %{key: nil, value: nil}
   @missing_attrs %{}
-  @sleep_time Application.get_env(:increment, :persist_cache, 30 * 1000)
 
   setup %{conn: conn} do
-    {:ok, conn: put_req_header(conn, "accept", "application/json")}
+    sleep_time = Application.get_env(:increment, :persist_cache, 30 * 1000)
+    {:ok, conn: put_req_header(conn, "accept", "application/json"), sleep_time: sleep_time}
   end
 
   describe "index" do
@@ -24,11 +24,11 @@ defmodule IncrementWeb.CounterControllerTest do
   end
 
   describe "create counter" do
-    test "renders counter when data is valid", %{conn: conn} do
+    test "renders counter when data is valid", %{conn: conn, sleep_time: sleep_time} do
       conn = post(conn, Routes.counter_path(conn, :create), @create_attrs)
       assert "" = response(conn, 202)
       # for cache commits
-      :timer.sleep(@sleep_time)
+      :timer.sleep(sleep_time)
       counter = Increment.Repo.get_by(Counter, key: @create_attrs.key)
 
       assert %Increment.Tasks.Counter{
@@ -37,7 +37,7 @@ defmodule IncrementWeb.CounterControllerTest do
              } = counter
     end
 
-    test "update counter 100 times", %{conn: conn} do
+    test "update counter 100 times", %{conn: conn, sleep_time: sleep_time} do
       cap = 100
       range = 1..cap
       total = 42 * cap
@@ -50,7 +50,7 @@ defmodule IncrementWeb.CounterControllerTest do
       assert "" = response(conn, 202)
 
       # for cache commits
-      :timer.sleep(@sleep_time)
+      :timer.sleep(sleep_time)
       counter = Increment.Repo.get_by(Counter, key: @create_attrs.key)
 
       assert %Increment.Tasks.Counter{
@@ -59,7 +59,7 @@ defmodule IncrementWeb.CounterControllerTest do
              } = counter
     end
 
-    test "update counter 1000 times", %{conn: conn} do
+    test "update counter 1000 times", %{conn: conn, sleep_time: sleep_time} do
       cap = 1000
       range = 1..cap
       total = 42 * cap
@@ -72,7 +72,7 @@ defmodule IncrementWeb.CounterControllerTest do
       assert "" = response(conn, 202)
 
       # for cache commits
-      :timer.sleep(@sleep_time)
+      :timer.sleep(sleep_time)
       counter = Increment.Repo.get_by(Counter, key: @create_attrs.key)
 
       assert %Increment.Tasks.Counter{
@@ -81,8 +81,8 @@ defmodule IncrementWeb.CounterControllerTest do
              } = counter
     end
 
-    test "update counter 10000 times", %{conn: conn} do
-      cap = 10000
+    test "update counter 10_000 times", %{conn: conn, sleep_time: sleep_time} do
+      cap = 10_000
       range = 1..cap
       total = 42 * cap
 
@@ -94,7 +94,7 @@ defmodule IncrementWeb.CounterControllerTest do
       assert "" = response(conn, 202)
 
       # for cache commits
-      :timer.sleep(@sleep_time)
+      :timer.sleep(sleep_time)
       counter = Increment.Repo.get_by(Counter, key: @create_attrs.key)
 
       assert %Increment.Tasks.Counter{
@@ -105,7 +105,7 @@ defmodule IncrementWeb.CounterControllerTest do
 
     @tag timeout: 600_000
     @tag :big_test
-    test "update counter 100000 times", %{conn: conn} do
+    test "update counter 100_000 times", %{conn: conn, sleep_time: sleep_time} do
       cap = 100_000
       range = 1..cap
       total = 42 * cap
@@ -118,7 +118,7 @@ defmodule IncrementWeb.CounterControllerTest do
       assert "" = response(conn, 202)
 
       # for cache commits
-      :timer.sleep(@sleep_time)
+      :timer.sleep(sleep_time)
       counter = Increment.Repo.get_by(Counter, key: @create_attrs.key)
 
       assert %Increment.Tasks.Counter{
@@ -129,7 +129,7 @@ defmodule IncrementWeb.CounterControllerTest do
 
     @tag timeout: 600_000
     @tag :big_test
-    test "update counter 1000000 times", %{conn: conn} do
+    test "update counter 1_000_000 times", %{conn: conn, sleep_time: sleep_time} do
       cap = 1_000_000
       range = 1..cap
       total = 42 * cap
@@ -142,7 +142,7 @@ defmodule IncrementWeb.CounterControllerTest do
       assert "" = response(conn, 202)
 
       # for cache commits
-      :timer.sleep(@sleep_time)
+      :timer.sleep(sleep_time)
       counter = Increment.Repo.get_by(Counter, key: @create_attrs.key)
 
       assert %Increment.Tasks.Counter{

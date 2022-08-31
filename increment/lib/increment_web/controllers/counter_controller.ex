@@ -13,15 +13,13 @@ defmodule IncrementWeb.CounterController do
     Logger.debug("Key: #{key}")
     Logger.debug("Value: #{value}")
 
-    with {:ok, _int} <- Tasks.cache_counter(counter_params) do
-      # with {:ok, %Counter{}} <- Tasks.create_counter(counter_params) do
-      conn
-      |> put_status(:accepted)
-      |> send_resp(202, "")
-    else
+    case Tasks.cache_counter(counter_params) do
+      {:ok, _int}
+        conn
+        |> put_status(:accepted)
+        |> send_resp(202, "")
       {:error, error} ->
         Logger.error("Failed to increment counter. Error: #{inspect(error)}")
-
         conn
         |> put_status(:bad_request)
         |> send_resp(422, "")

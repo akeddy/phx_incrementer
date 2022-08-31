@@ -1,7 +1,9 @@
 defmodule Increment.CommitIncrement do
-  use GenServer
+  @moduledoc """
+  a daemon designed to run periodically and commit a cache of increments to the persistence layer
+  """
 
-  @schedule Application.get_env(:increment, :persist_cache, 30 * 1000)
+  use GenServer
 
   def start_link(_opts) do
     GenServer.start_link(__MODULE__, %{})
@@ -38,6 +40,7 @@ defmodule Increment.CommitIncrement do
   end
 
   defp schedule_work() do
-    Process.send_after(self(), :work, @schedule)
+    schedule = Application.get_env(:increment, :persist_cache, 30 * 1000)
+    Process.send_after(self(), :work, schedule)
   end
 end
