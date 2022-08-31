@@ -4,8 +4,6 @@ defmodule IncrementWeb.CounterController do
   use IncrementWeb, :controller
 
   alias Increment.Tasks
-  alias Increment.Tasks.Counter
-
   action_fallback IncrementWeb.FallbackController
 
   def create(conn, %{"key" => key, "value" => value} = counter_params)
@@ -14,7 +12,7 @@ defmodule IncrementWeb.CounterController do
     Logger.debug("Value: #{value}")
 
     case Tasks.cache_counter(counter_params) do
-      {:ok, _int}
+      {:ok, _int} ->
         conn
         |> put_status(:accepted)
         |> send_resp(202, "")
