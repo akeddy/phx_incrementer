@@ -21,7 +21,7 @@ docker-compose up -d --scale increment=2
 ```
 
 ## Testing
-to perform tests: ```bashMIX_ENV=test mix test```  
+to perform tests: ```MIX_ENV=test mix test```  
 to view test coverage ```MIX_ENV=test mix test --cover``` (Test coverage is performed via ExCoverAlls)  
 to view coverage report: ```MIX_ENV=test mix coveralls.html
 
