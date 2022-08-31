@@ -1,5 +1,6 @@
+# Overview 
 
-in Points
+## Development Pain Points
 It was interesting to me that the parts of the stack I had used before (Elixir, Phoenix, Docker) caused me the most pain, while the piece I had not implemented before (the load balancer) went relatively smoothly. While I have experience implementing horizontally-scalable pipelines and redundant systems, I'd never implemented load balancing in docker before. In the past that had been an abstracted step done at the DevOps level, or I'd done it manually by defining individual containers with unique parameters to create my horizontally scaled system. Exposure to the `--scale` flag in docker-compose was surprisingly pain free. Conversely, Elixir and Phoenix caused me quite the headache when it came to dockerization. This came down to a recent (at least from my perspective) upgrade in the Elixir ecosystem; the upgrade of Erlang/OTP to version 25. When using the newest Elixir Docker container (1.13.4) you unfortunately get version 24 of the Erlang/OTP environment. When your libraries expect version 25 this causes a number of compilation issues. Coupling this with a few increments of the Phoenix framework from the last time I ran `mix phx.new` and I ended up needing to debug a bit more of the foundation of my application than I expected.
 
 Even with the debugging, running a fresh `mix phx.new` was rather exciting, as it gave me an excuse to see many of the improvements made in the application scaffolding and boilerplate. Introduction of the new ```runtime.conf``` instead of the expected ```prod.secrets.exs``` made for quite a surprise in some compilation errors and where mystery values were being pulled from.
@@ -29,5 +30,6 @@ For the future of this application I'd like to see authentication and a telemetr
 
 ## Production Readiness
 There are many reasons I do not consider this application production-ready. The simplest reasons are the lack of performance and security testing. While I used a Phoenix framework to expedite development (as covered in the README) this is far too much overhead for an application that is so simple. For production it would be much better to develop this as a standalone script. Finally, I question the scalability of our database; there has been no tuning performed on it, and I suspect it would start to show its many out-of-the-box cracks under significant load.
+
 
 
